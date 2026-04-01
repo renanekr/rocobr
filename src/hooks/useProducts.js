@@ -39,7 +39,7 @@ export function useProducts() {
       search: debouncedSearch,
       cat,
       page,
-      limit: 10,
+      limit: 12,
     });
 
     fetch(`/api/products?${params}`, { signal: controller.signal })

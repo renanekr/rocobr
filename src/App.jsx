@@ -1,12 +1,14 @@
-import { useProducts, useCategories } from './hooks/useProducts';
+import { useProducts, useCategories, useMarcas } from './hooks/useProducts';
 import ProductCard from './components/ProductCard';
 import Pagination  from './components/Pagination';
 
 export default function App() {
   const categories = useCategories();
+  const marcas = useMarcas();
   const {
     search, setSearch,
     cat, setCat,
+    marca, setMarca,
     page, setPage,
     data, meta,
     loading, error,
@@ -40,7 +42,7 @@ export default function App() {
                 stroke="#fff" strokeWidth="2" strokeLinecap="round"/>
             </svg>
           </div>
-          <span style={{ fontWeight: 600, fontSize: 16, color: '#111' }}>Catálogo de Produtos</span>
+          <span style={{ fontWeight: 600, fontSize: 16, color: '#111' }}>RocoBR - Catálogo de Produtos</span>
         </div>
         <button
           onClick={exportCSV}
@@ -62,7 +64,45 @@ export default function App() {
       </header>
 
       <main style={{ maxWidth: 1200, margin: '0 auto', padding: '2rem' }}>
+        
+        {/* Banner desktop */}
+        <div style={{
+          marginBottom: '1.5rem',
+          display: 'flex',
+          justifyContent: 'center',
+        }} className="hidden sm:flex">
+          <img
+            src="/topo_banner.png"
+            alt="Banner RocoBR"
+            style={{ maxWidth: '100%', borderRadius: 8 }}
+          />
+        </div>
 
+        {/* Aviso */}
+        <div style={{
+          background: '#fffbeb',
+          border: '1px solid #f59e0b',
+          borderLeft: '4px solid #f59e0b',
+          borderRadius: 8,
+          padding: '14px 18px',
+          marginBottom: '1.5rem',
+          display: 'flex',
+          gap: 12,
+          alignItems: 'flex-start',
+        }}>
+          <span style={{ fontSize: 20, lineHeight: 1 }}>⚠️</span>
+          <p style={{ margin: 0, fontSize: 14, color: '#92400e', lineHeight: 1.6 }}>
+            Estes produtos estão à venda após fechamento da empresa RocoBR. <br /> Caso tenha interesse,
+            pode entrar em contato através do fone{' '}
+            <a href="tel:+5548991454664" style={{ color: '#92400e', fontWeight: 600 }}>
+              (48) 99145-4664
+            </a>
+            {' '}ou do email{' '}
+            <a href="mailto:renanekr@gmail.com" style={{ color: '#92400e', fontWeight: 600 }}>
+              renanekr@gmail.com
+            </a>
+          </p>
+        </div>
         {/* Barra de busca */}
         <div style={{
           background: '#fff', borderRadius: 12,
@@ -105,6 +145,21 @@ export default function App() {
             <option value="">Todas as categorias</option>
             {categories.map(c => (
               <option key={c.id} value={c.id}>{c.categoria}</option>
+            ))}
+          </select>
+          <select
+            value={marca}
+            onChange={e => setMarca(e.target.value)}
+            style={{
+              border: '1px solid #e8eaed', borderRadius: 8,
+              padding: '9px 32px 9px 12px', fontSize: 14,
+              color: '#374151', background: '#f8f9fb',
+              outline: 'none', cursor: 'pointer', minWidth: 160,
+            }}
+          >
+            <option value="">Todas as marcas</option>
+            {marcas.map(m => (
+              <option key={m.produto_marca} value={m.produto_marca}>{m.produto_marca}</option>
             ))}
           </select>
 

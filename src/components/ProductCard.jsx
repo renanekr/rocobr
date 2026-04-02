@@ -92,8 +92,14 @@ export default function ProductCard({ product: p }) {
               € {Number(p.produto_euro).toFixed(2)}
             </span>
           </div>
-          <div style={{ marginTop: 4, fontSize: 12, color: p.produto_qtd > 0 ? '#16a34a' : '#dc2626' }}>
-            {p.produto_qtd > 0 ? `${p.produto_qtd} em estoque` : 'Sem estoque'}
+          <div style={{ marginTop: 4 }}>
+            <span style={{
+              fontSize: 11, fontWeight: 600, padding: '3px 8px', borderRadius: 99,
+              background: p.produto_qtd > 0 ? '#dcfce7' : '#fee2e2',
+              color: p.produto_qtd > 0 ? '#15803d' : '#dc2626',
+            }}>
+              {p.produto_qtd > 0 ? `${p.produto_qtd} em estoque` : 'Sem estoque'}
+            </span>
           </div>
         </div>
       </div>

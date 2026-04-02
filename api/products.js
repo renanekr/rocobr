@@ -1,5 +1,6 @@
+/* eslint-disable no-undef */
 import dotenv from 'dotenv';
-dotenv.config({ path: '.env.local' });
+dotenv.config({ path: '.env' });
 import mysql from 'mysql2/promise';
 
 let pool;
@@ -19,7 +20,7 @@ function getPool() {
 }
 
 export default async function handler(req, res) {
-  const { search = '', cat = '', page = '1', limit = '10', export: doExport } = req.query;
+  const { search = '', cat = '', marca = '', page = '1', limit = '12', export: doExport } = req.query;
 
   const db       = getPool();
   const pageNum  = Math.max(1, parseInt(page));
@@ -27,8 +28,8 @@ export default async function handler(req, res) {
   const offset   = (pageNum - 1) * limitNum;
   const like     = `%${search.trim()}%`;
 
-  const catFilter  = cat ? 'AND p.produto_cat = ?' : '';
-  const baseParams = cat ? [like, like, like, cat] : [like, like, like];
+  const catFilter   = cat   ? 'AND p.produto_cat = ?'   : '';
+  const marcaFilter = marca ? 'AND p.produto_marca = ?' : '';
 
   const baseWhere = `
     FROM produtos p
@@ -39,7 +40,14 @@ export default async function handler(req, res) {
       p.produto_marca  LIKE ?
     )
     ${catFilter}
+    ${marcaFilter}
   `;
+
+  const baseParams = [
+    like, like, like,
+    ...(cat   ? [cat]   : []),
+    ...(marca ? [marca] : []),
+  ];
 
   try {
     if (doExport === '1') {

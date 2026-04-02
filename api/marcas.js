@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import dotenv from 'dotenv';
-dotenv.config({ path: '.env.local' });
+dotenv.config({ path: '.env' });
 import mysql from 'mysql2/promise';
 
 let pool;
@@ -23,11 +23,14 @@ export default async function handler(req, res) {
   try {
     const db = getPool();
     const [rows] = await db.execute(
-      'SELECT id, categoria FROM categorias ORDER BY categoria ASC'
+      `SELECT DISTINCT produto_marca 
+       FROM produtos 
+       WHERE produto_marca IS NOT NULL AND produto_marca != ''
+       ORDER BY produto_marca ASC`
     );
     res.json(rows);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Erro ao buscar categorias' });
+    res.status(500).json({ error: 'Erro ao buscar marcas' });
   }
 }
